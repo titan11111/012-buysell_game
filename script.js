@@ -15,7 +15,7 @@ let gameState = {
     clearGoal: 15000,
 };
 
-let audioEnabled = true;
+let audioEnabled = false;
 
 const CLEAR_CONDITIONS = [
     { day: 10, money: 3000 },
@@ -112,6 +112,25 @@ let currentCustomer = null;
 let currentItem = null;
 let highscores = JSON.parse(localStorage.getItem('highscores')) || [];
 
+// ===== スタート画面 =====
+function startGame() {
+    // スタート画面を非表示
+    document.getElementById('start-screen').classList.remove('active');
+    // ゲーム画面を表示
+    document.getElementById('game-screen').classList.add('active');
+
+    // 音声を有効化
+    audioEnabled = true;
+    document.getElementById('sound-toggle-btn').textContent = '🔊';
+    
+    // BGMを再生
+    playBackgroundMusic();
+
+    // ゲーム初期化
+    updateStatus();
+    generateSeller();
+}
+
 // ===== 音声管理 =====
 function playSoundEffect(soundId) {
     if (!audioEnabled) return;
@@ -119,7 +138,9 @@ function playSoundEffect(soundId) {
     const audio = document.getElementById(soundId);
     if (audio) {
         audio.currentTime = 0;
-        audio.play().catch(() => {});
+        audio.play().catch(err => {
+            console.log('音声再生エラー:', err);
+        });
     }
 }
 
@@ -129,7 +150,10 @@ function playBackgroundMusic() {
     const bgm = document.getElementById('bgm-audio');
     if (bgm) {
         bgm.volume = 0.3;
-        bgm.play().catch(() => {});
+        bgm.currentTime = 0;
+        bgm.play().catch(err => {
+            console.log('BGM再生エラー:', err);
+        });
     }
 }
 
@@ -142,7 +166,10 @@ function toggleSound() {
         playBackgroundMusic();
     } else {
         btn.textContent = '🔇';
-        document.getElementById('bgm-audio').pause();
+        const bgm = document.getElementById('bgm-audio');
+        if (bgm) {
+            bgm.pause();
+        }
     }
 }
 
@@ -212,7 +239,7 @@ function negotiate() {
         showMessage(`${currentItem.name}を${finalPrice}円で買いました！`);
         generateSeller();
     } else {
-        playSoundEffect('se-click');
+        playSoundEffect('se-error');
         showMessage('お金が足りません！');
     }
 }
@@ -223,7 +250,7 @@ function skipBuy() {
 }
 
 function goToDisplayPhase() {
-    playSoundEffect('se-click');
+    playSoundEffect('se-transition');
     showPhase('display-phase');
     updateDisplayPhase();
 }
@@ -311,7 +338,7 @@ function removeFromShop(index) {
 }
 
 function startSelling() {
-    playSoundEffect('se-click');
+    playSoundEffect('se-transition');
     showPhase('sell-phase');
     initSellPhase();
 }
@@ -350,7 +377,7 @@ function nextCustomer() {
 
 function customerBuy() {
     if (gameState.shopInventory.length === 0) {
-        playSoundEffect('se-click');
+        playSoundEffect('se-error');
         showMessage('売る商品がありません！');
         return;
     }
@@ -386,7 +413,7 @@ function customerBuy() {
 }
 
 function endSelling() {
-    playSoundEffect('se-click');
+    playSoundEffect('se-transition');
     showPhase('result-phase');
     showResultPhase();
 }
@@ -422,7 +449,7 @@ function showResultPhase() {
 }
 
 function nextDay() {
-    playSoundEffect('se-click');
+    playSoundEffect('se-transition');
     
     gameState.day++;
     gameState.dailyBuyCost = 0;
@@ -522,22 +549,3 @@ function closeHighscoreModal() {
     document.getElementById('highscore-modal').classList.remove('show');
     location.reload();
 }
-
-// ===== 初期化 =====
-window.addEventListener('load', () => {
-    updateStatus();
-    
-    const soundToggleBtn = document.getElementById('sound-toggle-btn');
-    soundToggleBtn.addEventListener('click', toggleSound);
-    
-    const unlockAudio = () => {
-        playBackgroundMusic();
-        document.removeEventListener('click', unlockAudio);
-        document.removeEventListener('touchstart', unlockAudio);
-    };
-    
-    document.addEventListener('click', unlockAudio);
-    document.addEventListener('touchstart', unlockAudio);
-    
-    generateSeller();
-});
