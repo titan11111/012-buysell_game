@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- 音声 -->
-    <audio id="bgm-audio" loop volume="0.3">
+    <!-- 音声要素 -->
+    <audio id="bgm-audio" loop>
         <source src="audio/bgm/Untitled.mp3" type="audio/mpeg">
     </audio>
     <audio id="se-levelup">
@@ -26,165 +26,200 @@
     <audio id="se-talk">
         <source src="audio/se/sentou.mp3" type="audio/mpeg">
     </audio>
+    <audio id="se-error">
+        <source src="audio/se/hakusyu.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="se-transition">
+        <source src="audio/se/jarajara.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="se-buy">
+        <source src="audio/se/music.mp3" type="audio/mpeg">
+    </audio>
 
-    <div class="game-container">
-        <!-- ヘッダー：ステータス -->
-        <header class="game-header">
-            <div class="status-bar">
-                <div class="status-item">
-                    <span class="status-icon">💰</span>
-                    <span id="money">1000</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-icon">📅</span>
-                    <span id="day">1</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-icon">🌟</span>
-                    <span id="trust">50</span>
-                </div>
-                <div class="status-item">
-                    <span class="status-icon">🏆</span>
-                    <span id="level">1</span>
-                </div>
-                <button id="sound-toggle-btn" class="sound-btn">🔊</button>
+    <!-- ===== スタート画面 ===== -->
+    <div id="start-screen" class="start-screen active">
+        <div class="start-container">
+            <div class="start-title">🚀 未来商店経営ゲーム 🚀</div>
+            <div class="start-content">
+                <div class="game-icon">🛸</div>
+                <h2>ようこそ！</h2>
+                <p>あなたが宇宙商人になって、</p>
+                <p>お店を経営するゲームです。</p>
+                <p class="game-description">
+                    商品を仕入れて、<br>
+                    お客さんに売りましょう！<br>
+                    いっぱい儲けてね！💰
+                </p>
             </div>
-        </header>
-
-        <!-- メイン画面 -->
-        <main class="game-main">
-            <!-- メッセージ -->
-            <div id="message-display" class="message-display"></div>
-
-            <!-- 仕入れフェーズ -->
-            <div id="buy-phase" class="phase-container active">
-                <h1 class="phase-title">🛸 仕入れタイム</h1>
-                
-                <div class="seller-card">
-                    <div class="seller-portrait" id="seller-portrait">👽</div>
-                    <div class="seller-info">
-                        <h3 id="seller-name">宇宙商人ゼータ</h3>
-                        <p id="seller-story" class="seller-story">何か売ってください</p>
-                    </div>
-                </div>
-
-                <div class="item-card">
-                    <div class="item-emoji" id="offer-icon">⚙️</div>
-                    <h4 id="offer-name">古代エンジン部品</h4>
-                    <p id="offer-price" class="offer-price">希望価格: 100円</p>
-                </div>
-
-                <div class="negotiation-group">
-                    <label class="label-text">交渉スタイル:</label>
-                    <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="negotiation_style" value="kind" checked>
-                            <span>😊 親切</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="negotiation_style" value="neutral">
-                            <span>🤝 普通</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="negotiation_style" value="strict">
-                            <span>💼 厳しい</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button class="btn btn-primary" onclick="negotiate()">🛍️ 買う</button>
-                    <button class="btn btn-secondary" onclick="skipBuy()">⏭️ スキップ</button>
-                </div>
-
-                <button class="btn btn-next" onclick="goToDisplayPhase()">➡️ 陳列へ</button>
+            <button class="btn btn-start" onclick="startGame()">🎮 ゲーム開始</button>
+            <div class="start-info">
+                <p>📱 スマートフォン対応</p>
+                <p>🎵 タップで音声開始</p>
             </div>
+        </div>
+    </div>
 
-            <!-- 陳列フェーズ -->
-            <div id="display-phase" class="phase-container">
-                <h1 class="phase-title">📦 商品を並べる</h1>
-
-                <div class="display-mode-buttons">
-                    <button class="display-mode-btn active" onclick="setDisplayMode('normal')">📦 普通</button>
-                    <button class="display-mode-btn" onclick="setDisplayMode('theme')">🎨 テーマ</button>
-                    <button class="display-mode-btn" onclick="setDisplayMode('sale')">💰 安売り</button>
-                    <button class="display-mode-btn" onclick="setDisplayMode('premium')">✨ プレミアム</button>
-                </div>
-
-                <div class="inventory-display">
-                    <h3>📦 持ち物</h3>
-                    <div id="inventory" class="items-grid"></div>
-                </div>
-
-                <div class="shop-display">
-                    <h3>🛒 お店の商品</h3>
-                    <div id="shop-items" class="items-grid"></div>
-                </div>
-
-                <button class="btn btn-next" onclick="startSelling()">➡️ 販売へ</button>
-            </div>
-
-            <!-- 販売フェーズ -->
-            <div id="sell-phase" class="phase-container">
-                <h1 class="phase-title">🛍️ 販売タイム</h1>
-
-                <div class="customer-card">
-                    <div class="customer-portrait" id="customer-portrait">👨</div>
-                    <div class="customer-info">
-                        <h3 id="customer-name">コレクター太郎</h3>
-                        <p id="customer-need">珍しい宇宙グッズを探してるんです</p>
+    <!-- ===== ゲーム画面 ===== -->
+    <div id="game-screen" class="game-screen">
+        <div class="game-container">
+            <!-- ヘッダー：ステータス -->
+            <header class="game-header">
+                <div class="status-bar">
+                    <div class="status-item">
+                        <span class="status-icon">💰</span>
+                        <span id="money">1000</span>
                     </div>
-                </div>
-
-                <div class="shop-preview">
-                    <h3>🛒 お店の商品</h3>
-                    <div id="shop-items-sell-preview" class="items-grid"></div>
-                </div>
-
-                <div class="button-group">
-                    <button class="btn btn-primary" onclick="customerBuy()">🛒 買ってもらう</button>
-                    <button class="btn btn-secondary" onclick="nextCustomer()">⏭️ 次の客</button>
-                </div>
-
-                <button class="btn btn-next" onclick="endSelling()">➡️ 結果を見る</button>
-            </div>
-
-            <!-- 結果フェーズ -->
-            <div id="result-phase" class="phase-container">
-                <h1 class="phase-title">📊 今日の結果</h1>
-
-                <div class="result-summary">
-                    <div class="result-item">
-                        <span class="result-label">💰 仕入れ費用</span>
-                        <span class="result-value" id="buy-cost">0</span>円
+                    <div class="status-item">
+                        <span class="status-icon">📅</span>
+                        <span id="day">1</span>
                     </div>
-                    <div class="result-item">
-                        <span class="result-label">💵 売上</span>
-                        <span class="result-value" id="sell-income">0</span>円
+                    <div class="status-item">
+                        <span class="status-icon">🌟</span>
+                        <span id="trust">50</span>
                     </div>
-                    <div class="result-item highlight">
-                        <span class="result-label">💎 利益</span>
-                        <span class="result-value" id="daily-profit">0</span>円
+                    <div class="status-item">
+                        <span class="status-icon">🏆</span>
+                        <span id="level">1</span>
                     </div>
-                    <div class="result-item">
-                        <span class="result-label">👥 客数</span>
-                        <span class="result-value" id="customer-count">0</span>人
+                    <button id="sound-toggle-btn" class="sound-btn">🔊</button>
+                </div>
+            </header>
+
+            <!-- メイン画面 -->
+            <main class="game-main">
+                <!-- メッセージ -->
+                <div id="message-display" class="message-display"></div>
+
+                <!-- 仕入れフェーズ -->
+                <div id="buy-phase" class="phase-container active">
+                    <h1 class="phase-title">🛸 仕入れタイム</h1>
+                    
+                    <div class="seller-card">
+                        <div class="seller-portrait" id="seller-portrait">👽</div>
+                        <div class="seller-info">
+                            <h3 id="seller-name">宇宙商人ゼータ</h3>
+                            <p id="seller-story" class="seller-story">何か売ってください</p>
+                        </div>
                     </div>
+
+                    <div class="item-card">
+                        <div class="item-emoji" id="offer-icon">⚙️</div>
+                        <h4 id="offer-name">古代エンジン部品</h4>
+                        <p id="offer-price" class="offer-price">希望価格: 100円</p>
+                    </div>
+
+                    <div class="negotiation-group">
+                        <label class="label-text">交渉スタイル:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="negotiation_style" value="kind" checked>
+                                <span>😊 親切</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="negotiation_style" value="neutral">
+                                <span>🤝 普通</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="negotiation_style" value="strict">
+                                <span>💼 厳しい</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="negotiate()">🛍️ 買う</button>
+                        <button class="btn btn-secondary" onclick="skipBuy()">⏭️ スキップ</button>
+                    </div>
+
+                    <button class="btn btn-next" onclick="goToDisplayPhase()">➡️ 陳列へ</button>
                 </div>
 
-                <div class="news-section">
-                    <h3>📰 明日の情報</h3>
-                    <p id="market-news">市場情報</p>
+                <!-- 陳列フェーズ -->
+                <div id="display-phase" class="phase-container">
+                    <h1 class="phase-title">📦 商品を並べる</h1>
+
+                    <div class="display-mode-buttons">
+                        <button class="display-mode-btn active" onclick="setDisplayMode('normal')">📦 普通</button>
+                        <button class="display-mode-btn" onclick="setDisplayMode('theme')">🎨 テーマ</button>
+                        <button class="display-mode-btn" onclick="setDisplayMode('sale')">💰 安売り</button>
+                        <button class="display-mode-btn" onclick="setDisplayMode('premium')">✨ プレミアム</button>
+                    </div>
+
+                    <div class="inventory-display">
+                        <h3>📦 持ち物</h3>
+                        <div id="inventory" class="items-grid"></div>
+                    </div>
+
+                    <div class="shop-display">
+                        <h3>🛒 お店の商品</h3>
+                        <div id="shop-items" class="items-grid"></div>
+                    </div>
+
+                    <button class="btn btn-next" onclick="startSelling()">➡️ 販売へ</button>
                 </div>
 
-                <button class="btn btn-next" onclick="nextDay()">➡️ 明日へ</button>
-            </div>
-        </main>
+                <!-- 販売フェーズ -->
+                <div id="sell-phase" class="phase-container">
+                    <h1 class="phase-title">🛍️ 販売タイム</h1>
 
-        <!-- フッター -->
-        <footer class="game-footer">
-            <p>未来商店経営ゲーム 🚀</p>
-        </footer>
+                    <div class="customer-card">
+                        <div class="customer-portrait" id="customer-portrait">👨</div>
+                        <div class="customer-info">
+                            <h3 id="customer-name">コレクター太郎</h3>
+                            <p id="customer-need">珍しい宇宙グッズを探してるんです</p>
+                        </div>
+                    </div>
+
+                    <div class="shop-preview">
+                        <h3>🛒 お店の商品</h3>
+                        <div id="shop-items-sell-preview" class="items-grid"></div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="customerBuy()">🛒 買ってもらう</button>
+                        <button class="btn btn-secondary" onclick="nextCustomer()">⏭️ 次の客</button>
+                    </div>
+
+                    <button class="btn btn-next" onclick="endSelling()">➡️ 結果を見る</button>
+                </div>
+
+                <!-- 結果フェーズ -->
+                <div id="result-phase" class="phase-container">
+                    <h1 class="phase-title">📊 今日の結果</h1>
+
+                    <div class="result-summary">
+                        <div class="result-item">
+                            <span class="result-label">💰 仕入れ費用</span>
+                            <span class="result-value" id="buy-cost">0</span>円
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">💵 売上</span>
+                            <span class="result-value" id="sell-income">0</span>円
+                        </div>
+                        <div class="result-item highlight">
+                            <span class="result-label">💎 利益</span>
+                            <span class="result-value" id="daily-profit">0</span>円
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">👥 客数</span>
+                            <span class="result-value" id="customer-count">0</span>人
+                        </div>
+                    </div>
+
+                    <div class="news-section">
+                        <h3>📰 明日の情報</h3>
+                        <p id="market-news">市場情報</p>
+                    </div>
+
+                    <button class="btn btn-next" onclick="nextDay()">➡️ 明日へ</button>
+                </div>
+            </main>
+
+            <!-- フッター -->
+            <footer class="game-footer">
+                <p>未来商店経営ゲーム 🚀</p>
+            </footer>
+        </div>
     </div>
 
     <!-- レベルアップモーダル -->
