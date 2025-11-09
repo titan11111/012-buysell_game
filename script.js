@@ -1,788 +1,570 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html, body {
-    width: 100%;
-    height: 100%;
-    font-family: 'Arial', 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    overflow: hidden;
-}
-
-/* ===== スタート画面 ===== */
-.start-screen {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
-
-.start-screen.active {
-    display: flex;
-}
-
-.start-container {
-    text-align: center;
-    max-width: 90%;
-    animation: slideInDown 0.5s ease-out;
-}
-
-@keyframes slideInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.start-title {
-    font-size: 2.5em;
-    color: white;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-}
-
-.start-content {
-    background: white;
-    border-radius: 20px;
-    padding: 30px 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-.game-icon {
-    font-size: 4em;
-    margin-bottom: 15px;
-    animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-}
-
-.start-content h2 {
-    font-size: 1.8em;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.start-content p {
-    font-size: 1em;
-    color: #666;
-    margin-bottom: 8px;
-    line-height: 1.5;
-}
-
-.game-description {
-    font-size: 1.1em;
-    color: #764ba2;
-    font-weight: bold;
-    margin-top: 15px;
-}
-
-.btn-start {
-    background: linear-gradient(135deg, #FF6B9D 0%, #FF1654 100%);
-    color: white;
-    border: none;
-    padding: 18px 40px;
-    font-size: 1.3em;
-    font-weight: bold;
-    border-radius: 12px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: all 0.3s;
-    box-shadow: 0 4px 12px rgba(255, 22, 84, 0.4);
-}
-
-.btn-start:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(255, 22, 84, 0.6);
-}
-
-.btn-start:active {
-    transform: scale(0.98);
-}
-
-.start-info {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    padding: 12px;
-    color: white;
-    font-size: 0.9em;
-}
-
-.start-info p {
-    margin: 4px 0;
-    color: white;
-}
-
-/* ===== ゲーム画面 ===== */
-.game-screen {
-    display: none;
-    width: 100vw;
-    height: 100vh;
-}
-
-.game-screen.active {
-    display: flex;
-}
-
-.game-container {
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-/* ===== ヘッダー（ステータス） ===== */
-.game-header {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 8px 12px;
-    backdrop-filter: blur(10px);
-}
-
-.status-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.status-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 6px 10px;
-    border-radius: 6px;
-    color: white;
-    font-weight: bold;
-    font-size: 0.9em;
-    min-width: fit-content;
-}
-
-.status-icon {
-    font-size: 1.1em;
-}
-
-.sound-btn {
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    color: white;
-    padding: 6px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: all 0.3s;
-}
-
-.sound-btn:hover {
-    background: rgba(255, 255, 255, 0.4);
-}
-
-/* ===== メイン画面 ===== */
-.game-main {
-    flex: 1;
-    overflow-y: auto;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-}
-
-.phase-container {
-    display: none;
-    flex: 1;
-    overflow-y: auto;
-}
-
-.phase-container.active {
-    display: flex;
-    flex-direction: column;
-}
-
-.phase-title {
-    text-align: center;
-    color: white;
-    font-size: 1.4em;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.message-display {
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 6px;
-    min-height: 30px;
-    margin-bottom: 8px;
-    text-align: center;
-    font-size: 0.9em;
-    word-wrap: break-word;
-}
-
-/* ===== カード類 ===== */
-.seller-card {
-    display: flex;
-    gap: 10px;
-    background: white;
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 10px;
-    align-items: center;
-}
-
-.seller-portrait {
-    font-size: 2.5em;
-    min-width: 60px;
-    text-align: center;
-}
-
-.seller-info h3 {
-    color: #333;
-    font-size: 1em;
-    margin-bottom: 4px;
-}
-
-.seller-story {
-    color: #666;
-    font-size: 0.85em;
-    line-height: 1.3;
-}
-
-.item-card {
-    background: white;
-    border-radius: 10px;
-    padding: 15px;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.item-emoji {
-    font-size: 2.5em;
-    margin-bottom: 8px;
-}
-
-.item-card h4 {
-    color: #333;
-    font-size: 0.95em;
-    margin-bottom: 6px;
-}
-
-.offer-price {
-    color: #FF6B6B;
-    font-weight: bold;
-    font-size: 1em;
-}
-
-.customer-card {
-    display: flex;
-    gap: 10px;
-    background: white;
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 10px;
-    align-items: center;
-}
-
-.customer-portrait {
-    font-size: 2.5em;
-    min-width: 60px;
-    text-align: center;
-}
-
-.customer-info h3 {
-    color: #333;
-    font-size: 1em;
-    margin-bottom: 4px;
-}
-
-#customer-need {
-    color: #666;
-    font-size: 0.85em;
-    line-height: 1.3;
-}
-
-/* ===== フォーム ===== */
-.label-text {
-    display: block;
-    color: white;
-    font-weight: bold;
-    margin-bottom: 6px;
-    font-size: 0.9em;
-}
-
-.radio-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 6px;
-    margin-bottom: 10px;
-}
-
-.radio-label {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    color: white;
-    font-size: 0.85em;
-    transition: all 0.3s;
-}
-
-.radio-label:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-.radio-label input {
-    cursor: pointer;
-}
-
-.radio-label span {
-    flex: 1;
-}
-
-.negotiation-group {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
-
-/* ===== ボタン ===== */
-.button-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-
-.btn {
-    padding: 12px 16px;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.95em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-align: center;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-    color: white;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
-}
-
-.btn-secondary {
-    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
-    color: white;
-}
-
-.btn-secondary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
-}
-
-.btn-secondary:active {
-    transform: translateY(0);
-}
-
-.btn-next {
-    width: 100%;
-    background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
-    color: white;
-}
-
-.btn-next:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
-}
-
-.btn-next:active {
-    transform: translateY(0);
-}
-
-/* ===== 陳列モード ===== */
-.display-mode-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 6px;
-    margin-bottom: 10px;
-}
-
-.display-mode-btn {
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid transparent;
-    color: white;
-    padding: 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.8em;
-    transition: all 0.3s;
-}
-
-.display-mode-btn.active {
-    background: rgba(255, 255, 255, 0.4);
-    border-color: white;
-}
-
-.display-mode-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-/* ===== インベントリ・ショップ表示 ===== */
-.inventory-display,
-.shop-display,
-.shop-preview {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
-    flex: 1;
-    overflow-y: auto;
-}
-
-.inventory-display h3,
-.shop-display h3,
-.shop-preview h3 {
-    color: white;
-    font-size: 0.9em;
-    margin-bottom: 8px;
-}
-
-.items-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-    gap: 6px;
-}
-
-.shop-item {
-    background: white;
-    border-radius: 6px;
-    padding: 8px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.shop-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.item-emoji {
-    font-size: 1.8em;
-    margin-bottom: 4px;
-}
-
-.item-name {
-    font-size: 0.75em;
-    color: #333;
-    font-weight: bold;
-    line-height: 1.2;
-}
-
-.item-price {
-    font-size: 0.8em;
-    color: #FF6B6B;
-    font-weight: bold;
-    margin-top: 4px;
-}
-
-/* ===== 結果表示 ===== */
-.result-summary {
-    background: white;
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 10px;
-}
-
-.result-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-    font-size: 0.9em;
-}
-
-.result-item:last-child {
-    border-bottom: none;
-}
-
-.result-item.highlight {
-    background: #FFF9E6;
-    border-radius: 6px;
-    border-bottom: none;
-    font-weight: bold;
-}
-
-.result-label {
-    color: #333;
-    font-weight: bold;
-}
-
-.result-value {
-    color: #FF6B6B;
-    font-weight: bold;
-    font-size: 1.1em;
-}
-
-.news-section {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 10px;
-    color: white;
-    flex: 1;
-    overflow-y: auto;
-}
-
-.news-section h3 {
-    font-size: 0.9em;
-    margin-bottom: 6px;
-}
-
-.news-section p {
-    font-size: 0.85em;
-    line-height: 1.4;
-}
-
-/* ===== フッター ===== */
-.game-footer {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 6px;
-    text-align: center;
-    color: white;
-    font-size: 0.8em;
-}
-
-.game-footer p {
-    margin: 0;
-}
-
-/* ===== モーダル ===== */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal.show {
-    display: flex;
-}
-
-.modal-content {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    max-width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
-.modal-content h2 {
-    color: #333;
-    margin-bottom: 12px;
-    font-size: 1.3em;
-}
-
-.modal-content p {
-    color: #666;
-    margin-bottom: 10px;
-    line-height: 1.4;
-}
-
-.clear-stats {
-    background: #f5f5f5;
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 12px;
-    text-align: left;
-}
-
-.clear-stats p {
-    margin: 6px 0;
-    font-size: 0.9em;
-}
-
-.highscore-list {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.highscore-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px;
-    border-bottom: 1px solid #eee;
-    font-size: 0.85em;
-}
-
-.highscore-item:last-child {
-    border-bottom: none;
-}
-
-.highscore-rank {
-    font-weight: bold;
-    color: #FF6B6B;
-    min-width: 30px;
-}
-
-.highscore-name {
-    flex: 1;
-    text-align: left;
-    color: #333;
-}
-
-.highscore-score {
-    color: #4CAF50;
-    font-weight: bold;
-}
-
-/* ===== スマホ対応 ===== */
-@media (max-width: 600px) {
-    .start-title {
-        font-size: 1.8em;
-        margin-bottom: 15px;
-    }
-
-    .start-content {
-        padding: 20px 15px;
-        margin-bottom: 15px;
-    }
-
-    .game-icon {
-        font-size: 3em;
-    }
-
-    .start-content h2 {
-        font-size: 1.4em;
-    }
-
-    .start-content p {
-        font-size: 0.9em;
-    }
-
-    .game-description {
-        font-size: 1em;
-    }
-
-    .btn-start {
-        padding: 14px 30px;
-        font-size: 1.1em;
-    }
-
-    .status-item {
-        font-size: 0.8em;
-        padding: 4px 8px;
-    }
-
-    .phase-title {
-        font-size: 1.2em;
-        margin-bottom: 8px;
-    }
-
-    .seller-card,
-    .customer-card {
-        padding: 10px;
-        gap: 8px;
-    }
-
-    .seller-portrait,
-    .customer-portrait {
-        font-size: 2em;
-        min-width: 50px;
-    }
-
-    .item-card {
-        padding: 10px;
-    }
-
-    .item-emoji {
-        font-size: 2em;
-    }
-
-    .radio-group {
-        grid-template-columns: 1fr;
-    }
-
-    .display-mode-buttons {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .items-grid {
-        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
-    }
-
-    .btn {
-        padding: 10px 12px;
-        font-size: 0.9em;
-    }
-
-    .message-display {
-        font-size: 0.8em;
-        min-height: 25px;
-        padding: 6px;
-    }
-
-    .modal-content {
-        padding: 16px;
-    }
-
-    .modal-content h2 {
-        font-size: 1.1em;
+// ===== ゲームデータ初期化 =====
+let gameState = {
+    money: 1000,
+    day: 1,
+    trust: 50,
+    level: 1,
+    experience: 0,
+    inventory: [],
+    shopInventory: [],
+    dailyBuyCost: 0,
+    dailySellIncome: 0,
+    dailyCustomerCount: 0,
+    displayMode: 'normal',
+    maxMoney: 10000,
+    clearGoal: 15000,
+};
+
+let audioEnabled = false;
+
+const CLEAR_CONDITIONS = [
+    { day: 10, money: 3000 },
+    { day: 15, money: 5000 },
+    { day: 20, money: 8000 },
+    { day: 25, money: 15000 },
+];
+
+const SELLERS = [
+    {
+        name: '宇宙商人ゼータ',
+        story: '「故郷の星で見つけた古い部品です。現金が必要で...」',
+        portrait: '👽',
+    },
+    {
+        name: 'ロボット商人R-1000',
+        story: '「効率的な取引を望みます。いかがでしょうか？」',
+        portrait: '🤖',
+    },
+    {
+        name: '火星からの訪問者',
+        story: '「地球の商品に興味があります。売りませんか？」',
+        portrait: '🔴',
+    },
+    {
+        name: '謎の宇宙人レクス',
+        story: '「ヒューヒュー。これ、すごく珍しいんです...」',
+        portrait: '👾',
+    },
+    {
+        name: 'AIトレーダー',
+        story: '「データ分析によると、これは価値があります」',
+        portrait: '🤝',
+    },
+];
+
+const ITEMS = [
+    { name: '古代エンジン部品', emoji: '⚙️', basePrice: 100 },
+    { name: '星の欠片', emoji: '⭐', basePrice: 150 },
+    { name: 'エイリアン鉱石', emoji: '💎', basePrice: 200 },
+    { name: '宇宙塵', emoji: '✨', basePrice: 80 },
+    { name: 'タイムカプセル', emoji: '📦', basePrice: 250 },
+    { name: 'UFOパーツ', emoji: '🛸', basePrice: 180 },
+    { name: '光の結晶', emoji: '💫', basePrice: 220 },
+    { name: '古代文字の書物', emoji: '📚', basePrice: 120 },
+];
+
+const CUSTOMERS = [
+    {
+        name: 'コレクター太郎',
+        need: '珍しい宇宙グッズを探してるんです',
+        portrait: '👨',
+        preferences: ['古代エンジン部品', '星の欠片'],
+    },
+    {
+        name: 'おばあさん',
+        need: 'かわいいものがあれば...それで十分です',
+        portrait: '👵',
+        preferences: ['星の欠片', '光の結晶'],
+    },
+    {
+        name: 'スペースファン花子',
+        need: 'UFO関連のものはありますか？',
+        portrait: '👩',
+        preferences: ['UFOパーツ', '宇宙塵'],
+    },
+    {
+        name: '少年太郎',
+        need: 'キラキラしたものが好きです！',
+        portrait: '👦',
+        preferences: ['光の結晶', '星の欠片'],
+    },
+    {
+        name: 'サイエンティスト',
+        need: '宇宙の謎を解く素材を探しています',
+        portrait: '🧑‍🔬',
+        preferences: ['エイリアン鉱石', 'タイムカプセル'],
+    },
+];
+
+const MARKET_NEWS = [
+    '「宇宙旅行ブームが到来！宇宙船関連商品が人気になりそうです。」',
+    '「最近、古代エンジン部品の価値が上がっているそうです。」',
+    '「星の欠片の需要が急増中です。」',
+    '「エイリアン鉱石は富豪の間で大人気です。」',
+    '「UFOパーツの価格相場が上昇しています。」',
+    '「光の結晶は若い世代に流行中です。」',
+    '「タイムカプセルは歴史好きから注目されています。」',
+    '「宇宙塵が子供向けギフトとして人気です。」',
+];
+
+let currentSeller = null;
+let currentCustomer = null;
+let currentItem = null;
+let highscores = JSON.parse(localStorage.getItem('highscores')) || [];
+
+// ===== ゲーム初期化 =====
+document.addEventListener('DOMContentLoaded', function() {
+    const startBtn = document.getElementById('start-btn');
+    const soundToggleBtn = document.getElementById('sound-toggle-btn');
+    
+    // ゲーム開始ボタンのクリックイベント
+    startBtn.addEventListener('click', startGame);
+    
+    // 音声切り替えボタンのクリックイベント
+    soundToggleBtn.addEventListener('click', toggleSound);
+});
+
+// ===== スタート画面 =====
+function startGame() {
+    // スタート画面を非表示
+    document.getElementById('start-screen').classList.remove('active');
+    // ゲーム画面を表示
+    document.getElementById('game-screen').classList.add('active');
+
+    // 音声を有効化
+    audioEnabled = true;
+    document.getElementById('sound-toggle-btn').textContent = '🔊';
+    
+    // BGMを再生
+    playBackgroundMusic();
+
+    // ゲーム初期化
+    updateStatus();
+    generateSeller();
+}
+
+// ===== 音声管理 =====
+function playSoundEffect(soundId) {
+    if (!audioEnabled) return;
+    
+    const audio = document.getElementById(soundId);
+    if (audio) {
+        audio.currentTime = 0;
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(err => {
+                console.warn('効果音再生エラー:', soundId, err);
+            });
+        }
     }
 }
 
-/* ===== スクロール時の最適化 ===== */
-::-webkit-scrollbar {
-    width: 6px;
+function playBackgroundMusic() {
+    if (!audioEnabled) return;
+    
+    const bgm = document.getElementById('bgm-audio');
+    if (bgm) {
+        bgm.volume = 0.3;
+        bgm.currentTime = 0;
+        const playPromise = bgm.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(err => {
+                console.warn('BGM再生失敗:', err);
+                console.info('音声再生がブロックされました。ゲーム内の画面をタップして再度お試しください。');
+            });
+        }
+    }
 }
 
-::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
+function toggleSound() {
+    audioEnabled = !audioEnabled;
+    const btn = document.getElementById('sound-toggle-btn');
+    
+    if (audioEnabled) {
+        btn.textContent = '🔊';
+        playBackgroundMusic();
+    } else {
+        btn.textContent = '🔇';
+        const bgm = document.getElementById('bgm-audio');
+        if (bgm) {
+            bgm.pause();
+        }
+    }
 }
 
-::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 3px;
+// ===== フェーズ切り替え =====
+function showPhase(phaseName) {
+    document.querySelectorAll('.phase-container').forEach(phase => {
+        phase.classList.remove('active');
+    });
+    document.getElementById(phaseName).classList.add('active');
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.5);
+// ===== 仕入れフェーズ =====
+function generateSeller() {
+    playSoundEffect('se-talk');
+    
+    currentSeller = SELLERS[Math.floor(Math.random() * SELLERS.length)];
+    currentItem = ITEMS[Math.floor(Math.random() * ITEMS.length)];
+
+    const offerPrice = Math.floor(
+        currentItem.basePrice * (0.5 + Math.random() * 1)
+    );
+
+    document.getElementById('seller-portrait').textContent = currentSeller.portrait;
+    document.getElementById('seller-name').textContent = currentSeller.name;
+    document.getElementById('seller-story').textContent = currentSeller.story;
+    document.getElementById('offer-icon').textContent = currentItem.emoji;
+    document.getElementById('offer-name').textContent = currentItem.name;
+    document.getElementById('offer-price').textContent = `希望価格: ${offerPrice}円`;
+
+    currentItem.price = offerPrice;
+}
+
+function negotiate() {
+    const style = document.querySelector(
+        'input[name="negotiation_style"]:checked'
+    ).value;
+
+    let discount = 0;
+    let trustChange = 0;
+
+    if (style === 'kind') {
+        discount = Math.floor(currentItem.price * 0.05);
+        trustChange = 5;
+    } else if (style === 'neutral') {
+        discount = Math.floor(currentItem.price * 0.1);
+        trustChange = 2;
+    } else if (style === 'strict') {
+        discount = Math.floor(currentItem.price * 0.2);
+        trustChange = -5;
+    }
+
+    const finalPrice = Math.floor(currentItem.price - discount);
+
+    if (gameState.money >= finalPrice) {
+        playSoundEffect('se-success');
+        
+        gameState.money -= finalPrice;
+        gameState.trust += trustChange;
+        gameState.inventory.push({
+            name: currentItem.name,
+            emoji: currentItem.emoji,
+            buyPrice: finalPrice,
+        });
+        gameState.dailyBuyCost += finalPrice;
+
+        updateStatus();
+        showMessage(`${currentItem.name}を${finalPrice}円で買いました！`);
+        generateSeller();
+    } else {
+        playSoundEffect('se-error');
+        showMessage('お金が足りません！');
+    }
+}
+
+function skipBuy() {
+    playSoundEffect('se-click');
+    generateSeller();
+}
+
+function goToDisplayPhase() {
+    playSoundEffect('se-transition');
+    showPhase('display-phase');
+    updateDisplayPhase();
+}
+
+// ===== 陳列フェーズ =====
+function setDisplayMode(mode) {
+    playSoundEffect('se-click');
+    gameState.displayMode = mode;
+    
+    document.querySelectorAll('.display-mode-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+
+    updateDisplayPhase();
+}
+
+function updateDisplayPhase() {
+    updateInventory();
+    updateShopItems();
+}
+
+function updateInventory() {
+    const inventoryDiv = document.getElementById('inventory');
+    inventoryDiv.innerHTML = '';
+
+    gameState.inventory.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.innerHTML = `
+            <div class="item-emoji">${item.emoji}</div>
+            <div class="item-name">${item.name}</div>
+            <div class="item-price">売却時</div>
+        `;
+        div.onclick = () => addToShop(index);
+        inventoryDiv.appendChild(div);
+    });
+}
+
+function addToShop(index) {
+    playSoundEffect('se-click');
+    
+    const item = gameState.inventory[index];
+    const sellPrice = Math.floor(item.buyPrice * (1.3 + Math.random() * 0.5));
+
+    gameState.shopInventory.push({
+        name: item.name,
+        emoji: item.emoji,
+        buyPrice: item.buyPrice,
+        sellPrice: sellPrice,
+    });
+
+    gameState.inventory.splice(index, 1);
+    updateDisplayPhase();
+}
+
+function updateShopItems() {
+    const shopDiv = document.getElementById('shop-items');
+    shopDiv.innerHTML = '';
+
+    gameState.shopInventory.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.innerHTML = `
+            <div class="item-emoji">${item.emoji}</div>
+            <div class="item-name">${item.name}</div>
+            <div class="item-price">${item.sellPrice}円</div>
+        `;
+        div.onclick = () => removeFromShop(index);
+        shopDiv.appendChild(div);
+    });
+}
+
+function removeFromShop(index) {
+    playSoundEffect('se-click');
+    
+    const item = gameState.shopInventory[index];
+    gameState.shopInventory.splice(index, 1);
+    gameState.inventory.push({
+        name: item.name,
+        emoji: item.emoji,
+        buyPrice: item.buyPrice,
+    });
+    updateDisplayPhase();
+}
+
+function startSelling() {
+    playSoundEffect('se-transition');
+    showPhase('sell-phase');
+    initSellPhase();
+}
+
+// ===== 販売フェーズ =====
+function initSellPhase() {
+    updateShopPreview();
+    nextCustomer();
+}
+
+function updateShopPreview() {
+    const previewDiv = document.getElementById('shop-items-sell-preview');
+    previewDiv.innerHTML = '';
+
+    gameState.shopInventory.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.innerHTML = `
+            <div class="item-emoji">${item.emoji}</div>
+            <div class="item-name">${item.name}</div>
+            <div class="item-price">${item.sellPrice}円</div>
+        `;
+        previewDiv.appendChild(div);
+    });
+}
+
+function nextCustomer() {
+    playSoundEffect('se-talk');
+    
+    currentCustomer = CUSTOMERS[Math.floor(Math.random() * CUSTOMERS.length)];
+
+    document.getElementById('customer-portrait').textContent = currentCustomer.portrait;
+    document.getElementById('customer-name').textContent = currentCustomer.name;
+    document.getElementById('customer-need').textContent = currentCustomer.need;
+}
+
+function customerBuy() {
+    if (gameState.shopInventory.length === 0) {
+        playSoundEffect('se-error');
+        showMessage('売る商品がありません！');
+        return;
+    }
+
+    let boughtItem = null;
+    for (let item of gameState.shopInventory) {
+        if (currentCustomer.preferences.includes(item.name)) {
+            boughtItem = item;
+            break;
+        }
+    }
+
+    if (!boughtItem) {
+        boughtItem = gameState.shopInventory[Math.floor(Math.random() * gameState.shopInventory.length)];
+    }
+
+    playSoundEffect('se-sell');
+    
+    gameState.money += boughtItem.sellPrice;
+    gameState.dailySellIncome += boughtItem.sellPrice;
+    gameState.dailyCustomerCount++;
+
+    gameState.shopInventory = gameState.shopInventory.filter(
+        item => item !== boughtItem
+    );
+
+    updateStatus();
+    showMessage(
+        `${currentCustomer.name}が${boughtItem.name}を${boughtItem.sellPrice}円で買ってくれました！`
+    );
+
+    updateShopPreview();
+}
+
+function endSelling() {
+    playSoundEffect('se-transition');
+    showPhase('result-phase');
+    showResultPhase();
+}
+
+// ===== 結果フェーズ =====
+function showResultPhase() {
+    const dailyProfit = gameState.dailySellIncome - gameState.dailyBuyCost;
+    const expGained = Math.floor(dailyProfit / 10) + gameState.dailyCustomerCount * 5;
+
+    document.getElementById('buy-cost').textContent = gameState.dailyBuyCost;
+    document.getElementById('sell-income').textContent = gameState.dailySellIncome;
+    document.getElementById('daily-profit').textContent = dailyProfit;
+    document.getElementById('customer-count').textContent = gameState.dailyCustomerCount;
+
+    gameState.experience += expGained;
+
+    const levelUpThreshold = 100 + gameState.level * 50;
+    if (gameState.experience >= levelUpThreshold) {
+        gameState.level++;
+        gameState.experience = 0;
+        gameState.maxMoney += 5000;
+        updateStatus();
+        
+        playSoundEffect('se-levelup');
+        document.getElementById('modal-level').textContent = gameState.level;
+        document.getElementById('level-up-modal').classList.add('show');
+    }
+
+    const marketNews = MARKET_NEWS[Math.floor(Math.random() * MARKET_NEWS.length)];
+    document.getElementById('market-news').textContent = marketNews;
+
+    checkClearCondition();
+}
+
+function nextDay() {
+    playSoundEffect('se-transition');
+    
+    gameState.day++;
+    gameState.dailyBuyCost = 0;
+    gameState.dailySellIncome = 0;
+    gameState.dailyCustomerCount = 0;
+    gameState.inventory = [];
+    gameState.shopInventory = [];
+
+    updateStatus();
+    showPhase('buy-phase');
+    generateSeller();
+}
+
+// ===== ユーティリティ =====
+function showMessage(message) {
+    document.getElementById('message-display').textContent = message;
+}
+
+function updateStatus() {
+    document.getElementById('money').textContent = gameState.money;
+    document.getElementById('day').textContent = gameState.day;
+    document.getElementById('trust').textContent = gameState.trust;
+    document.getElementById('level').textContent = gameState.level;
+}
+
+function closeModal() {
+    playSoundEffect('se-click');
+    document.getElementById('level-up-modal').classList.remove('show');
+}
+
+function checkClearCondition() {
+    for (let condition of CLEAR_CONDITIONS) {
+        if (gameState.day === condition.day && gameState.money >= condition.money) {
+            showClearModal();
+            return;
+        }
+    }
+}
+
+function showClearModal() {
+    playSoundEffect('se-success');
+    
+    document.getElementById('clear-message').textContent = 
+        `素晴らしい商人になりました！Day ${gameState.day}で${gameState.money}円を稼ぎました！`;
+
+    const statsDiv = document.getElementById('clear-stats');
+    statsDiv.innerHTML = `
+        <p>📅 最終日: ${gameState.day}日目</p>
+        <p>💰 最終所持金: ${gameState.money}円</p>
+        <p>🏆 到達レベル: ${gameState.level}</p>
+    `;
+
+    document.getElementById('clear-modal').classList.add('show');
+}
+
+function saveClearData() {
+    const playerName = prompt('お名前を入力してください：', 'プレイヤー');
+    if (playerName) {
+        playSoundEffect('se-success');
+        
+        highscores.push({
+            name: playerName,
+            money: gameState.money,
+            day: gameState.day,
+            level: gameState.level,
+            date: new Date().toLocaleDateString('ja-JP'),
+        });
+
+        highscores.sort((a, b) => b.money - a.money);
+        highscores = highscores.slice(0, 10);
+
+        localStorage.setItem('highscores', JSON.stringify(highscores));
+        showHighscoreModal();
+    }
+}
+
+function showHighscoreModal() {
+    const listDiv = document.getElementById('highscore-list');
+    listDiv.innerHTML = '';
+
+    highscores.forEach((score, index) => {
+        const div = document.createElement('div');
+        div.className = 'highscore-item';
+        div.innerHTML = `
+            <span class="highscore-rank">#${index + 1}</span>
+            <span class="highscore-name">${score.name} (Day ${score.day})</span>
+            <span class="highscore-score">${score.money}円</span>
+        `;
+        listDiv.appendChild(div);
+    });
+
+    document.getElementById('highscore-modal').classList.add('show');
+}
+
+function closeHighscoreModal() {
+    playSoundEffect('se-click');
+    document.getElementById('highscore-modal').classList.remove('show');
+    location.reload();
 }
