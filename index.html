@@ -8,31 +8,31 @@
 </head>
 <body>
     <!-- 音声要素 -->
-    <audio id="bgm-audio" loop>
+    <audio id="bgm-audio" loop preload="auto">
         <source src="audio/bgm/Untitled.mp3" type="audio/mpeg">
     </audio>
-    <audio id="se-levelup">
+    <audio id="se-levelup" preload="auto">
         <source src="audio/se/levelup.mp3" type="audio/mpeg">
     </audio>
-    <audio id="se-success">
+    <audio id="se-success" preload="auto">
         <source src="audio/se/seikai2.mp3" type="audio/mpeg">
     </audio>
-    <audio id="se-click">
+    <audio id="se-click" preload="auto">
         <source src="audio/se/kettei.mp3" type="audio/mpeg">
     </audio>
-    <audio id="se-sell">
+    <audio id="se-sell" preload="auto">
         <source src="audio/se/reji.mp3" type="audio/mpeg">
     </audio>
-    <audio id="se-talk">
+    <audio id="se-talk" preload="auto">
         <source src="audio/se/sentou.mp3" type="audio/mpeg">
     </audio>
-    <audio id="se-error">
+    <audio id="se-error" preload="auto">
         <source src="audio/se/hakusyu.mp3" type="audio/mpeg">
     </audio>
-    <audio id="se-transition">
+    <audio id="se-transition" preload="auto">
         <source src="audio/se/jarajara.mp3" type="audio/mpeg">
     </audio>
-    <audio id="se-buy">
+    <audio id="se-buy" preload="auto">
         <source src="audio/se/music.mp3" type="audio/mpeg">
     </audio>
 
@@ -51,7 +51,7 @@
                     いっぱい儲けてね！💰
                 </p>
             </div>
-            <button class="btn btn-start" onclick="startGame()">🎮 ゲーム開始</button>
+            <button id="start-btn" class="btn btn-start">🎮 ゲーム開始</button>
             <div class="start-info">
                 <p>📱 スマートフォン対応</p>
                 <p>🎵 タップで音声開始</p>
@@ -127,8 +127,8 @@
                     </div>
 
                     <div class="button-group">
-                        <button class="btn btn-primary" onclick="negotiate()">🛍️ 買う</button>
-                        <button class="btn btn-secondary" onclick="skipBuy()">⏭️ スキップ</button>
+                        <button class="btn btn-primary" onclick="negotiate()">🛒 買う</button>
+                        <button class="btn btn-secondary" onclick="skipBuy()">⭐ スキップ</button>
                     </div>
 
                     <button class="btn btn-next" onclick="goToDisplayPhase()">➡️ 陳列へ</button>
@@ -151,7 +151,7 @@
                     </div>
 
                     <div class="shop-display">
-                        <h3>🛒 お店の商品</h3>
+                        <h3>🛍 お店の商品</h3>
                         <div id="shop-items" class="items-grid"></div>
                     </div>
 
@@ -160,7 +160,7 @@
 
                 <!-- 販売フェーズ -->
                 <div id="sell-phase" class="phase-container">
-                    <h1 class="phase-title">🛍️ 販売タイム</h1>
+                    <h1 class="phase-title">🛒 販売タイム</h1>
 
                     <div class="customer-card">
                         <div class="customer-portrait" id="customer-portrait">👨</div>
@@ -171,13 +171,13 @@
                     </div>
 
                     <div class="shop-preview">
-                        <h3>🛒 お店の商品</h3>
+                        <h3>🛍 お店の商品</h3>
                         <div id="shop-items-sell-preview" class="items-grid"></div>
                     </div>
 
                     <div class="button-group">
                         <button class="btn btn-primary" onclick="customerBuy()">🛒 買ってもらう</button>
-                        <button class="btn btn-secondary" onclick="nextCustomer()">⏭️ 次の客</button>
+                        <button class="btn btn-secondary" onclick="nextCustomer()">⭐ 次の客</button>
                     </div>
 
                     <button class="btn btn-next" onclick="endSelling()">➡️ 結果を見る</button>
